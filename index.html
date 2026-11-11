@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Natanael Martins — Portfólio">
+<meta property="og:description" content="Produto, front-end, IA aplicada e games, direto de São Paulo.">
+<meta property="og:image" content="https://natanaelmgs04.github.io/img/sp-noite.webp">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Natanael Martins</title>
+<meta name="description" content="Portfólio de Natanael Martins: produto, front-end, IA aplicada e games, direto de São Paulo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Hanken+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: uma noite em São Paulo. Foto real da cidade no topo e no fim; no meio, cada projeto
+   é um capítulo com a cor da própria marca e um objeto 3D preso ao scroll. Visual único (não segue tema claro/escuro). */
+:root {
+  --bg: #0a0d0e;
+  --fg: #ecebe5;
+  --ac: #ffab3d;
+
+  --f-display: "Archivo", "Arial Narrow", Impact, sans-serif;
+  --f-body: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-serif: "Instrument Serif", Georgia, serif;
+
+  --t-xs: .78rem;
+  --t-sm: .92rem;
+  --t-md: clamp(1.05rem, .98rem + .3vw, 1.2rem);
+  --t-lg: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+  --t-xl: clamp(2.1rem, 1.3rem + 3.6vw, 4.4rem);
+  --t-2xl: clamp(3rem, 1.2rem + 8.4vw, 9rem);
+
+  --gl: max(18px, env(safe-area-inset-left, 0px));
+  --gr: max(18px, env(safe-area-inset-right, 0px));
+  --ease: cubic-bezier(.2, .7, .1, 1);
+  color-scheme: dark;
+}
+@media (min-width: 900px) { :root { --gl: max(40px, env(safe-area-inset-left, 0px)); --gr: max(40px, env(safe-area-inset-right, 0px)); } }
+body[data-theme="match"] { --bg: #16110d; --fg: #f4ece3; --ac: #e0916f; }
+body[data-theme="cz"]    { --bg: #f7f0e3; --fg: #1c4436; --ac: #c4606b; }
+body[data-theme="geo"]   { --bg: #0c1411; --fg: #ece5d6; --ac: #e6bd8d; }
+body[data-theme="atl"]   { --bg: #06121d; --fg: #e6f0f5; --ac: #7cc7dc; }
+body[data-theme="paper"] { --bg: #dfe0dc; --fg: #101213; --ac: #e2401c; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+body {
+  --mut: color-mix(in srgb, var(--fg) 66%, transparent);
+  --line: color-mix(in srgb, var(--fg) 18%, transparent);
+  --soft: color-mix(in srgb, var(--fg) 7%, transparent);
+  background: var(--bg); color: var(--fg);
+  font-family: var(--f-body); font-size: var(--t-md); line-height: 1.55;
+  transition: background-color .7s var(--ease), color .7s var(--ease);
+  overflow-x: clip; -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bg); }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+p, h1, h2, h3, h4, ul, ol, dl, dd, figure, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+::selection { background: var(--ac); color: #0a0d0e; }
+:focus-visible { outline: 2px solid var(--ac); outline-offset: 4px; }
+
+.wrap { padding-left: var(--gl); padding-right: var(--gr); max-width: 1500px; margin-inline: auto; width: 100%; }
+.label { font-family: var(--f-display); font-stretch: 112%; font-variation-settings: "wdth" 112; font-weight: 600; font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; }
+.display { font-family: var(--f-display); font-weight: 800; font-variation-settings: "wdth" 70; line-height: .9; letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance; }
+.serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -.01em; color: var(--ac); }
+
+/* palavras divididas para animação */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.w > span { display: inline-block; will-change: transform; }
+
+/* ---------- loader ---------- */
+.loader { position: fixed; inset: 0; z-index: 100; background: #0a0d0e; color: #ecebe5; display: grid; place-items: end start; padding: 0 var(--gr) max(22px, env(safe-area-inset-bottom, 0px)) var(--gl);
+  animation: loader-out .01s 6s forwards; }
+.loader.done { animation: none; pointer-events: none; }
+.loader-row { display: flex; justify-content: space-between; align-items: end; width: 100%; gap: 16px; }
+.loader-n { font-family: var(--f-display); font-weight: 800; font-variation-settings: "wdth" 62; font-size: clamp(5rem, 22vw, 16rem); line-height: .8; font-variant-numeric: tabular-nums; }
+@keyframes loader-out { to { visibility: hidden; opacity: 0; } }
+
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; display: block; }
+
+/* ---------- cursor ---------- */
+.cursor { position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; mix-blend-mode: difference; opacity: 0; transition: width .25s var(--ease), height .25s var(--ease), margin .25s var(--ease), opacity .3s; }
+.cursor.on { opacity: 1; }
+.cursor.big { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+@media (hover: none), (pointer: coarse) { .cursor { display: none; } }
+
+/* ---------- topo ---------- */
+.top { position: fixed; z-index: 30; left: 0; right: 0; top: env(safe-area-inset-top, 0px); mix-blend-mode: difference; color: #fff; pointer-events: none; transition: transform .5s var(--ease), opacity .4s; }
+.top.away { transform: translateY(-110%); opacity: 0; }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; }
+.top a { pointer-events: auto; text-decoration: none; }
+.brand { font-family: var(--f-display); font-weight: 800; font-variation-settings: "wdth" 110; letter-spacing: .02em; font-size: 1rem; text-transform: uppercase; }
+.nav { display: flex; gap: clamp(14px, 2.4vw, 34px); }
+.nav a { position: relative; padding-block: 4px; }
+.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease); }
+.nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+@media (max-width: 720px) { .nav a:not(.keep) { display: none; } }
+.bar { position: fixed; left: 0; top: 0; height: 3px; width: 100%; z-index: 35; background: var(--ac); transform: scaleX(0); transform-origin: 0 50%; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; color: #ecebe5; background: #0a0d0e; isolation: isolate; }
+.hero-bg { position: absolute; inset: -6% 0; z-index: -2; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(#0a0d0e 0%, rgba(10,13,14,.25) 22%, rgba(10,13,14,.1) 55%, #0a0d0e 100%); }
+.hero-meta { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 74px); }
+.hero-meta .wrap { display: flex; justify-content: space-between; gap: 12px; color: rgba(236,235,229,.72); }
+.hero-name { position: absolute; left: 0; right: 0; top: 21%; text-align: center; font-family: var(--f-display); font-weight: 900; --wd: 125; font-variation-settings: "wdth" var(--wd); font-size: 12.3vw; line-height: .8; letter-spacing: -.02em; white-space: nowrap; }
+.hero-name .ch { display: inline-block; will-change: transform; }
+.hero-sur { position: absolute; right: 9vw; top: calc(21% + 8.6vw); font-family: var(--f-serif); font-style: italic; font-size: 7.4vw; line-height: 1; color: #ffab3d; z-index: 3; }
+.hero-me { position: absolute; left: 50%; bottom: 0; height: min(74svh, 86vw); width: auto; max-width: none; translate: -50% 0; z-index: 2;
+  -webkit-mask-image: linear-gradient(#000 80%, transparent 99%); mask-image: linear-gradient(#000 80%, transparent 99%); }
+.hero-foot { position: absolute; left: 0; right: 0; bottom: max(26px, env(safe-area-inset-bottom, 0px)); z-index: 4; }
+.hero-foot .wrap { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+.hero-lede { max-width: 21ch; font-family: var(--f-display); font-variation-settings: "wdth" 88; font-weight: 500; font-size: var(--t-lg); line-height: 1.12; }
+.hero-side { display: grid; gap: 14px; justify-items: end; text-align: right; }
+.hero-side ul { display: grid; gap: 2px; color: rgba(236,235,229,.78); font-size: var(--t-sm); }
+.scroll-hint { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.scroll-hint i { width: 1px; height: 44px; background: currentColor; display: block; transform-origin: top; animation: hint 2s var(--ease) infinite; }
+@keyframes hint { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+@media (max-width: 760px) {
+  .hero-name { --wd: 62; font-size: 23.4vw; top: 15%; }
+  .hero-sur { font-size: 13vw; right: 7vw; top: calc(15% + 16.5vw); z-index: 5; }
+  .hero-meta .wrap { font-size: .62rem; letter-spacing: .1em; white-space: nowrap; }
+  .hero-me { height: min(56svh, 118vw); bottom: 9svh; }
+  .hero::after { background: linear-gradient(#0a0d0e 0%, rgba(10,13,14,.2) 24%, rgba(10,13,14,0) 58%, rgba(10,13,14,.9) 84%, #0a0d0e 100%); z-index: 3; }
+  .hero-meta, .hero-name { z-index: 4; }
+  .about-photo { aspect-ratio: 1 / 1; }
+  .hero-foot .wrap { display: grid; }
+  .hero-side { justify-items: start; text-align: left; }
+  .hero-side ul { display: none; }
+  .scroll-hint i { height: 26px; }
+}
+
+/* ---------- manifesto ---------- */
+.manifesto { padding-block: clamp(90px, 16vw, 220px) clamp(70px, 10vw, 150px); }
+.manifesto p.big { font-family: var(--f-display); font-variation-settings: "wdth" 84; font-weight: 600; font-size: var(--t-xl); line-height: 1.04; letter-spacing: -.02em; max-width: 19ch; }
+.manifesto p.big .mw { opacity: .16; transition: opacity .1s linear; }
+.manifesto p.big em { font-family: var(--f-serif); font-weight: 400; color: var(--ac); letter-spacing: -.01em; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: clamp(56px, 8vw, 110px); border-top: 1px solid var(--line); }
+.facts li { padding: 22px 18px 0 0; display: grid; gap: 6px; align-content: start; }
+.facts b { font-family: var(--f-display); font-variation-settings: "wdth" 66; font-weight: 800; font-size: clamp(2.6rem, 1.6rem + 4.6vw, 5.6rem); line-height: .9; font-variant-numeric: tabular-nums; }
+.facts span { color: var(--mut); font-size: var(--t-sm); max-width: 22ch; }
+@media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; row-gap: 28px; } }
+
+.sec-head { display: grid; gap: 18px; }
+.sec-head h2 { font-size: var(--t-2xl); }
+.work-head { padding-block: clamp(50px, 8vw, 110px) clamp(30px, 5vw, 70px); border-top: 1px solid var(--line); }
+.work-head .row { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.work-head p { color: var(--mut); max-width: 40ch; }
+
+/* ---------- capítulos (projetos) ---------- */
+.chapter { position: relative; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
+.chapter.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
+.chapter.flip .chapter-stage { order: 2; }
+.chapter-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; place-items: center; }
+.chapter-word { position: absolute; left: 50%; top: 50%; translate: -50% -50%; font-family: var(--f-display); font-weight: 900; font-variation-settings: "wdth" 62; font-size: clamp(8rem, 30vw, 34rem); line-height: .8; white-space: nowrap; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1.5px var(--line); user-select: none; }
+.slot { position: relative; width: 86%; height: 62%; display: grid; place-items: center; }
+.slot img { max-height: 100%; width: auto; max-width: 100%; border-radius: 10px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+html.gl .slot img { visibility: hidden; }
+.chapter-text { padding: 22vh var(--gr) 26vh clamp(18px, 4vw, 70px); display: grid; gap: clamp(64px, 14vh, 150px); align-content: start; min-width: 0; }
+.chapter.flip .chapter-text { padding: 22vh clamp(18px, 4vw, 70px) 26vh var(--gl); }
+.c-head { display: grid; gap: 18px; }
+.c-head .n { display: flex; gap: 14px; align-items: center; color: var(--ac); }
+.c-head .n::after { content: ""; flex: 0 0 56px; height: 1px; background: currentColor; }
+.c-head h3 { font-size: clamp(3.2rem, 1.8rem + 6.6vw, 8rem); }
+.c-head .lead { font-size: var(--t-lg); line-height: 1.3; max-width: 30ch; }
+.c-block { display: grid; gap: 22px; max-width: 46ch; }
+.c-block h4 { color: var(--ac); }
+.c-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.c-list li { padding: 16px 0; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+.c-list b { font-family: var(--f-display); font-variation-settings: "wdth" 90; font-weight: 700; font-size: 1.12em; }
+.c-list span { color: var(--mut); }
+.specs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+.specs dt { color: var(--mut); font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; }
+.specs dd { font-family: var(--f-display); font-variation-settings: "wdth" 90; font-weight: 600; line-height: 1.25; margin-top: 4px; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 12px; padding: 13px 22px; border-radius: 999px; border: 1px solid var(--fg); text-decoration: none; font-family: var(--f-display); font-variation-settings: "wdth" 100; font-weight: 600; font-size: var(--t-sm); overflow-wrap: anywhere;
+  transition: background-color .3s, color .3s, border-color .3s; }
+.btn:hover { background: var(--fg); color: var(--bg); }
+.btn.fill { background: var(--ac); border-color: var(--ac); color: #0a0d0e; }
+.btn.fill:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.quote { font-family: var(--f-serif); font-style: italic; font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem); line-height: 1.12; max-width: 22ch; }
+.quote + cite { display: block; font-style: normal; color: var(--mut); font-size: var(--t-sm); margin-top: 14px; max-width: 40ch; }
+
+.life { display: grid; gap: 10px; }
+.life-age { font-family: var(--f-display); font-variation-settings: "wdth" 62; font-weight: 900; font-size: clamp(5rem, 3rem + 9vw, 11rem); line-height: .8; font-variant-numeric: tabular-nums; }
+.life-age small { font-size: .22em; font-variation-settings: "wdth" 100; letter-spacing: .08em; margin-left: .4em; vertical-align: 2.2em; }
+.life-track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.life-track i { height: 5px; background: var(--line); border-radius: 3px; transition: background-color .3s; }
+.life-track i.on { background: var(--ac); }
+.life-name { font-family: var(--f-display); font-variation-settings: "wdth" 92; font-weight: 700; font-size: var(--t-lg); }
+.life-desc { color: var(--mut); max-width: 36ch; min-height: 3.2em; }
+
+@media (max-width: 899px) {
+  .chapter, .chapter.flip { display: block; }
+  .chapter-stage { height: 46vh; height: 46svh; z-index: 3; background: var(--bg); transition: background-color .7s var(--ease); border-bottom: 1px solid var(--line); }
+  .slot { width: 92%; height: 78%; }
+  .chapter-text, .chapter.flip .chapter-text { padding: 56px var(--gr) 90px var(--gl); gap: 64px; }
+}
+
+/* ---------- galeria horizontal ---------- */
+.hgal { overflow: hidden; padding-block: clamp(60px, 9vw, 120px); }
+.hgal-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(28px, 4vw, 56px); }
+.hgal-head h2 { font-size: var(--t-xl); }
+.hgal-head p { color: var(--mut); max-width: 34ch; }
+.hgal-track { display: flex; gap: clamp(14px, 2vw, 28px); padding-left: var(--gl); padding-right: var(--gr); width: max-content; will-change: transform; }
+.hgal figure { width: min(78vw, 720px); display: grid; gap: 12px; flex: none; }
+.hgal figure img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 6px; background: var(--soft); }
+.hgal figcaption { display: flex; justify-content: space-between; gap: 12px; color: var(--mut); font-size: var(--t-sm); }
+.hgal figcaption b { color: var(--fg); font-weight: 600; }
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .hgal-scroller { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .hgal-scroller::-webkit-scrollbar { display: none; }
+  .hgal figure { scroll-snap-align: center; }
+}
+
+/* ---------- laboratório ---------- */
+.lab { padding-block: clamp(80px, 11vw, 160px); }
+.rows { margin-top: clamp(36px, 5vw, 70px); border-top: 1px solid var(--fg); }
+.rows a { display: grid; grid-template-columns: 5.5rem minmax(0, 1.1fr) minmax(0, 1.3fr) auto; gap: 20px; align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; transition: padding .45s var(--ease), color .3s; }
+.rows a::before { content: ""; position: absolute; inset: 0 calc(var(--gl) * -1) 0 calc(var(--gr) * -1); background: var(--fg); transform: scaleY(0); transform-origin: bottom; transition: transform .45s var(--ease); z-index: -1; }
+.rows { position: relative; z-index: 0; }
+.rows a:hover { color: var(--bg); padding-inline: 14px; }
+.rows a:hover::before { transform: scaleY(1); }
+.rows .y { font-size: var(--t-sm); opacity: .7; font-variant-numeric: tabular-nums; }
+.rows .t { font-family: var(--f-display); font-variation-settings: "wdth" 76; font-weight: 800; text-transform: uppercase; font-size: clamp(1.5rem, 1.1rem + 2vw, 2.8rem); line-height: 1; }
+.rows .d { opacity: .78; }
+.rows .s { font-size: var(--t-sm); opacity: .7; text-align: right; white-space: nowrap; }
+@media (max-width: 899px) { .rows a { grid-template-columns: 1fr auto; gap: 6px 14px; } .rows .y { grid-column: 1; grid-row: 1; } .rows .s { grid-column: 2; grid-row: 1; } .rows .t, .rows .d { grid-column: 1 / -1; } }
+
+/* ---------- processo ---------- */
+.process { position: relative; color: #ecebe5; background: #0a0d0e; isolation: isolate; padding-block: clamp(90px, 12vw, 180px); }
+.process-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.process-bg img { width: 100%; height: 120%; object-fit: cover; object-position: 50% 40%; opacity: .5; filter: grayscale(.4) contrast(1.05); }
+.process-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#0a0d0e, rgba(10,13,14,.55) 30%, rgba(10,13,14,.7) 70%, #0a0d0e); }
+.process blockquote { font-family: var(--f-display); font-variation-settings: "wdth" 80; font-weight: 700; font-size: var(--t-xl); line-height: 1.02; letter-spacing: -.02em; max-width: 17ch; margin-top: 22px; }
+.process blockquote em { font-family: var(--f-serif); font-weight: 400; color: #ffab3d; }
+.steps { display: grid; gap: 0; margin-top: clamp(50px, 8vw, 110px); }
+.step { position: sticky; top: calc(84px + var(--i) * 16px); display: grid; grid-template-columns: 5rem minmax(0, .8fr) minmax(0, 1.2fr); gap: 24px; align-items: baseline; padding: clamp(22px, 3vw, 40px) clamp(18px, 3vw, 40px); border-radius: 14px; background: #ecebe5; color: #101213; margin-bottom: 18px; box-shadow: 0 -18px 40px -24px rgba(0,0,0,.7); min-height: 30vh; align-content: start; }
+.step .k { font-family: var(--f-display); font-weight: 800; font-variation-settings: "wdth" 62; font-size: 2rem; color: #e2401c; }
+.step h3 { font-family: var(--f-display); font-variation-settings: "wdth" 70; font-weight: 800; text-transform: uppercase; font-size: clamp(2rem, 1.3rem + 3.4vw, 4.4rem); line-height: .9; }
+.step p { max-width: 38ch; font-size: var(--t-md); }
+@media (max-width: 760px) { .step { grid-template-columns: 1fr; gap: 8px; min-height: 0; } }
+
+/* ---------- sobre ---------- */
+.about { padding-block: clamp(80px, 11vw, 170px); }
+.about-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(30px, 6vw, 100px); align-items: start; }
+.about-photo { position: sticky; top: 110px; aspect-ratio: 4 / 4.6; background: #101213; border-radius: 8px; overflow: hidden; display: grid; align-items: end; justify-items: center; max-width: 520px; }
+.about-photo img { width: 100%; transform-origin: 50% 100%; scale: 1.12; }
+.about-photo span { position: absolute; left: 16px; top: 14px; color: #ecebe5; }
+.about-text { display: grid; gap: 28px; }
+.about-text h2 { font-size: var(--t-xl); }
+.about-text .big { font-family: var(--f-display); font-variation-settings: "wdth" 88; font-weight: 500; font-size: var(--t-lg); line-height: 1.22; }
+.about-text p { max-width: 58ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 8px 16px; border: 1px solid var(--fg); border-radius: 999px; font-size: var(--t-sm); }
+.faith { margin-top: clamp(50px, 7vw, 100px); border-top: 1px solid var(--fg); padding-top: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px clamp(30px, 6vw, 100px); }
+.faith .quote { color: var(--fg); max-width: 15ch; font-size: clamp(2.2rem, 1.4rem + 3.4vw, 4.6rem); line-height: 1; }
+.faith p { max-width: 50ch; }
+.faith p + p { margin-top: 14px; }
+@media (max-width: 860px) { .about-grid, .faith { grid-template-columns: 1fr; } .about-photo { position: relative; top: 0; max-width: 360px; } }
+
+/* ---------- trajetória ---------- */
+.path { padding-block: 0 clamp(80px, 11vw, 170px); }
+.tl { position: relative; margin-top: clamp(36px, 5vw, 70px); }
+.tl::before, .tl-fill { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.tl-fill { background: var(--ac); transform-origin: top; transform: scaleY(0); }
+.tl li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 20px clamp(20px, 5vw, 80px); padding: clamp(22px, 3vw, 40px) 0 clamp(22px, 3vw, 40px) clamp(22px, 4vw, 60px); border-bottom: 1px solid var(--line); align-items: baseline; }
+.tl time { font-family: var(--f-display); font-weight: 900; font-variation-settings: "wdth" 62; font-size: clamp(4rem, 2rem + 10vw, 11rem); line-height: .78; font-variant-numeric: tabular-nums; }
+.tl li.next time { color: transparent; -webkit-text-stroke: 2px var(--fg); }
+.tl h3 { font-family: var(--f-display); font-variation-settings: "wdth" 90; font-weight: 700; font-size: var(--t-lg); line-height: 1.15; margin-bottom: 8px; }
+.tl p { color: var(--mut); max-width: 48ch; }
+@media (max-width: 760px) { .tl li { grid-template-columns: 1fr; } }
+
+/* ---------- habilidades ---------- */
+.skills { padding-block: clamp(70px, 9vw, 130px) clamp(80px, 11vw, 160px); overflow: hidden; }
+.marquee { display: flex; width: max-content; animation: slide 40s linear infinite; font-family: var(--f-display); font-weight: 900; font-variation-settings: "wdth" 62; text-transform: uppercase; font-size: clamp(4rem, 2rem + 11vw, 12rem); line-height: .86; white-space: nowrap; }
+.marquee.rev { animation-direction: reverse; color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
+.marquee span { padding-right: .35em; }
+.marquee span::after { content: "✦"; font-size: .3em; vertical-align: .9em; margin-left: 1.1em; color: var(--ac); -webkit-text-stroke: 0; }
+@keyframes slide { to { transform: translateX(-50%); } }
+.skill-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px clamp(24px, 4vw, 60px); margin-top: clamp(50px, 7vw, 100px); }
+.skill-grid h3 { color: var(--ac); padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.skill-grid li { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.skill-grid li span { color: var(--mut); font-size: var(--t-sm); white-space: nowrap; }
+@media (max-width: 900px) { .skill-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .skill-grid { grid-template-columns: 1fr; } }
+
+/* ---------- contato ---------- */
+.contact { position: relative; color: #ecebe5; background: #0a0d0e; isolation: isolate; padding-block: clamp(110px, 16vw, 240px) 0; overflow: hidden; }
+.contact-bg { position: absolute; inset: 0; z-index: -1; }
+.contact-bg img { width: 100%; height: 115%; object-fit: cover; object-position: 50% 30%; }
+.contact-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#0a0d0e 0%, rgba(10,13,14,.45) 35%, rgba(10,13,14,.8) 75%, #0a0d0e 100%); }
+.contact h2 { font-size: clamp(3.6rem, 1rem + 14vw, 15rem); }
+.contact h2 .serif { color: #ffab3d; font-size: .82em; }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 34px clamp(30px, 6vw, 100px); margin-top: clamp(40px, 6vw, 90px); align-items: start; }
+.contact-grid > p { font-size: var(--t-lg); line-height: 1.25; max-width: 24ch; }
+.channels { border-top: 1px solid rgba(236,235,229,.3); }
+.channels li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(236,235,229,.3); }
+.channels small { color: rgba(236,235,229,.6); font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; }
+.channels strong { font-family: var(--f-display); font-variation-settings: "wdth" 92; font-weight: 600; font-size: var(--t-lg); line-height: 1.1; overflow-wrap: anywhere; user-select: all; }
+.channels .go { font: inherit; font-size: var(--t-sm); color: #ffab3d; background: none; border: 0; cursor: pointer; text-decoration: none; padding: 8px 0 8px 8px; white-space: nowrap; }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .channels li { grid-template-columns: 1fr auto; } .channels small { grid-column: 1 / -1; } }
+.foot { margin-top: clamp(70px, 10vw, 150px); padding-block: 22px max(22px, env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(236,235,229,.3); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; color: rgba(236,235,229,.6); font-size: var(--t-sm); }
+.foot a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .loader { display: none; }
+  .manifesto p.big .mw { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-row"><span class="label">Natanael Martins<br>Portfólio 2026</span><span class="loader-n" id="loader-n">0</span></div>
+</div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="bar" id="bar" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#topo" aria-label="Início">N.M</a>
+    <nav class="nav label" aria-label="Seções">
+      <a href="#projetos">Projetos</a>
+      <a href="#processo">Processo</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#trajetoria">Trajetória</a>
+      <a class="keep" href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="topo" data-theme="night">
+    <div class="hero-bg" id="hero-bg"><img src="img/sp-noite.webp" alt="São Paulo à noite vista de um terraço, com a chaminé da antiga fábrica da Antarctica" width="2000" height="1128" fetchpriority="high"></div>
+    <div class="hero-meta"><div class="wrap label"><span>Portfólio — 2026</span><span>São Paulo, BR · <span id="clock">--:--</span></span></div></div>
+    <h1 class="hero-name" id="hero-name" aria-label="Natanael Martins"><span aria-hidden="true" id="hero-letters">NATANAEL</span></h1>
+    <span class="hero-sur" id="hero-sur" aria-hidden="true">Martins</span>
+    <img class="hero-me" id="hero-me" src="img/natanael.webp" alt="Natanael sorrindo, de cabelo cacheado e camiseta preta" width="640" height="640">
+    <div class="hero-foot">
+      <div class="wrap">
+        <p class="hero-lede">Produto, front-end, IA e games. Feitos por inteiro.</p>
+        <div class="hero-side">
+          <ul>
+            <li>Técnico em Informática · FIAP School</li>
+            <li>Engenharia de Software · FIAP, 2027</li>
+          </ul>
+          <a class="scroll-hint label" href="#manifesto"><i></i>Role para ver</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" id="manifesto" data-theme="night">
+    <div class="wrap">
+      <p class="label" style="color:var(--ac);margin-bottom:26px">Quem escreve este site</p>
+      <p class="big" id="manifesto-text">Eu desenho e construo produtos digitais que <em>explicam o que fazem</em>. Começo ouvindo gente de verdade, passo pelo código e pela IA, e só paro no último pixel.</p>
+      <ul class="facts">
+        <li><b data-count="2023">2023</b><span>ano em que escrevi minha primeira linha de código</span></li>
+        <li><b data-count="4">4</b><span>projetos grandes levados do zero até a apresentação</span></li>
+        <li><b data-count="5">5</b><span>fases de uma vida inteira no meu jogo, o ChosenZen</span></li>
+        <li><b data-count="24">24</b><span>repositórios públicos no GitHub</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="work-head" id="projetos" data-theme="night">
+    <div class="wrap row">
+      <div class="sec-head"><span class="label" style="color:var(--ac)">Projetos em destaque</span><h2 class="display" data-split>Quatro mundos</h2></div>
+      <p>Cada projeto tem a cor da própria marca. Role devagar: os objetos reagem ao scroll.</p>
+    </div>
+  </div>
+
+  <!-- 01 match.IA -->
+  <section class="chapter" id="match" data-theme="match">
+    <div class="chapter-stage">
+      <div class="chapter-word" aria-hidden="true">match</div>
+      <div class="slot" id="slot-match"><img src="img/match-home.webp" alt="Página inicial do match.IA" width="1440" height="900" loading="lazy"></div>
+    </div>
+    <div class="chapter-text">
+      <div class="c-head">
+        <span class="label n">01 · TCC · FIAP School · 2026</span>
+        <h3 class="display" data-split>match<span class="serif">.IA</span></h3>
+        <p class="lead">A plataforma que encontra o arquiteto certo para cada cliente, e explica o porquê.</p>
+      </div>
+      <div class="c-block">
+        <p>O cliente descreve o projeto, os arquitetos mostram o que já construíram, e a IA calcula a compatibilidade entre os dois. Está no ar e vai para a banca do TCC.</p>
+        <div class="btns">
+          <a class="btn fill" href="https://matchia-oe46.onrender.com" target="_blank" rel="noopener">Abrir o site ↗</a>
+          <a class="btn" href="https://github.com/natanaelmgs04/TCC---MatchAI" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="c-block">
+        <h4 class="label">O que eu fiz</h4>
+        <ul class="c-list">
+          <li><b>Match com categorias</b><span>O resultado separa arquitetos ocupados, de outra cidade ou fora do orçamento. O cliente nunca fica sem resposta.</span></li>
+          <li><b>Gemini integrado</b><span>Cada compatibilidade vem com uma explicação gerada por IA, e um assistente ajuda a montar o briefing.</span></li>
+          <li><b>Design system próprio</b><span>Modo escuro, contraste WCAG, navegação por teclado e conformidade com a LGPD.</span></li>
+          <li><b>Do produto à vitrine</b><span>Pitch deck de 19 pranchas, campanha “Deu match”, app em Ionic e vídeo em Remotion.</span></li>
+        </ul>
+      </div>
+      <div class="c-block">
+        <blockquote class="quote">“Seria perfeito ter uma IA que responda ao meu jeito de projetar.”</blockquote>
+        <cite>Teresa, arquiteta entrevistada na pesquisa de campo. A frase virou o ponto de partida do produto.</cite>
+        <dl class="specs">
+          <div><dt>Meu papel</dt><dd>Fundador · Produto &amp; Tecnologia</dd></div>
+          <div><dt>Equipe</dt><dd>6 founders</dd></div>
+          <div><dt>Front-end</dt><dd>HTML, CSS e JS puros</dd></div>
+          <div><dt>Back-end</dt><dd>Node, Express, MongoDB</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ChosenZen -->
+  <section class="chapter flip" id="chosenzen" data-theme="cz">
+    <div class="chapter-stage">
+      <div class="chapter-word" aria-hidden="true">zen</div>
+      <div class="slot" id="slot-game"><img src="img/cz-f3.webp" alt="ChosenZen, fase da Juventude no Café Ipê" width="1280" height="720" loading="lazy"></div>
+    </div>
+    <div class="chapter-text">
+      <div class="c-head">
+        <span class="label n">02 · Estúdio Vívido · Godot 4.7</span>
+        <h3 class="display" data-split>Chosen<span class="serif">Zen</span></h3>
+        <p class="lead">Um simulador de uma vida inteira. Cada escolha volta lá na frente.</p>
+      </div>
+      <div class="c-block">
+        <p>Tudo começa com uma cola que não era sua embaixo da carteira. Essa acusação injusta atravessa a escola, o primeiro emprego, a vida adulta e a velhice.</p>
+        <div class="life" aria-live="off">
+          <div class="life-age"><span id="life-age">14</span><small>ANOS</small></div>
+          <div class="life-track" id="life-track"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          <div class="life-name" id="life-name">Fase 1 · Família</div>
+          <p class="life-desc" id="life-desc">Uma noite em casa. Contar ou esconder o que aconteceu na escola.</p>
+        </div>
+      </div>
+      <div class="c-block">
+        <h4 class="label">O que tem dentro</h4>
+        <ul class="c-list">
+          <li><b>Cinco fases, uma história</b><span>O Lucas te recebe no café conforme o que você fez na escola. Na vida adulta, seu filho passa pelo que você passou.</span></li>
+          <li><b>Finais de verdade</b><span>Uma escolha fatal na Juventude, morte por velhice com epitáfio, salvamento e capítulos no menu.</span></li>
+          <li><b>Mapas vivos</b><span>Portas que abrem, chuva nas janelas, vapor da panela, o gato Mingau, e a mesma casa 58 anos depois.</span></li>
+          <li><b>Cutscenes de cinema</b><span>Retratos com expressões, impact frame, câmera lenta e trilha por momento.</span></li>
+        </ul>
+      </div>
+      <div class="c-block">
+        <dl class="specs">
+          <div><dt>Gênero</dt><dd>Life sim narrativo</dd></div>
+          <div><dt>Plataformas</dt><dd>Navegador e Windows</dd></div>
+          <div><dt>Modelo</dt><dd>R$ 19,90, compra única</dd></div>
+          <div><dt>Arte e som</dt><dd>Pixel art e trilha geradas por código</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 GeoMosaico -->
+  <section class="chapter" id="geomosaico" data-theme="geo">
+    <div class="chapter-stage">
+      <div class="chapter-word" aria-hidden="true">geo</div>
+      <div class="slot" id="slot-globe"><img src="img/geo-hero.webp" alt="Página inicial do GeoMosaico" width="1440" height="900" loading="lazy"></div>
+    </div>
+    <div class="chapter-text">
+      <div class="c-head">
+        <span class="label n">03 · Future Fest · FIAP School · 2025</span>
+        <h3 class="display" data-split>Geo<span class="serif">Mosaico</span></h3>
+        <p class="lead">Um guia de viagens com IA para descobrir o mundo com mais consciência.</p>
+      </div>
+      <div class="c-block">
+        <p>Uma empresa B-Corp de geografia e turismo. Você pergunta sobre um país e recebe um guia; se for assinante, a IA monta um roteiro com datas, orçamento e interesses.</p>
+        <div class="btns"><a class="btn" href="https://github.com/natanaelmgs04/GeoMosaico" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+      <div class="c-block">
+        <h4 class="label">O que tem dentro</h4>
+        <ul class="c-list">
+          <li><b>Chatbot com Gemini 2.5 Pro</b><span>Responde dúvidas de geografia e turismo e gera guias de viagem.</span></li>
+          <li><b>Roteiro sob medida</b><span>A partir de destino, datas, número de pessoas, orçamento e interesses.</span></li>
+          <li><b>Contas de verdade</b><span>Cadastro e login com senha criptografada, sessões e páginas protegidas.</span></li>
+          <li><b>Ranking de cidades</b><span>Notas dos usuários salvas no MongoDB, e planos de R$ 5 a R$ 20.</span></li>
+        </ul>
+      </div>
+      <div class="c-block">
+        <dl class="specs">
+          <div><dt>Meu papel</dt><dd>Co-fundador &amp; Estrategista</dd></div>
+          <div><dt>Equipe</dt><dd>Julya Vitória e Gabriel Milanez</dd></div>
+          <div><dt>Back-end</dt><dd>Node, Express 5, MongoDB</dd></div>
+          <div><dt>IA</dt><dd>Google Gemini 2.5 Pro</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 AtlanticoSeg -->
+  <section class="chapter flip" id="atlanticoseg" data-theme="atl">
+    <div class="chapter-stage">
+      <div class="chapter-word" aria-hidden="true">seg</div>
+      <div class="slot" id="slot-atl"><img src="img/atl-home.webp" alt="Site da AtlanticoSeg com um carro azul e a cobertura de roubo e furto" width="1440" height="900" loading="lazy"></div>
+    </div>
+    <div class="chapter-text">
+      <div class="c-head">
+        <span class="label n">04 · Cliente real · No ar</span>
+        <h3 class="display" data-split>Atlantico<span class="serif">Seg</span></h3>
+        <p class="lead">O site de uma corretora de seguros com mais de 25 anos de mercado, contado como um filme.</p>
+      </div>
+      <div class="c-block">
+        <p>“Proteção do tamanho do Atlântico.” Conforme o visitante rola a página, um carro atravessa a cena e cada cobertura do seguro auto aparece no momento certo.</p>
+        <div class="btns">
+          <a class="btn fill" href="https://atlanticoseg.com.br/" target="_blank" rel="noopener">atlanticoseg.com.br ↗</a>
+          <a class="btn" href="https://github.com/natanaelmgs04/AtlanticoSeg" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="c-block">
+        <h4 class="label">O que tem dentro</h4>
+        <ul class="c-list">
+          <li><b>Seguro auto em cenas</b><span>Colisão e danos, roubo e furto, assistência 24h, carro reserva e guincho, e cobertura para terceiros.</span></li>
+          <li><b>Um filme de 80 segundos</b><span>“Lá fora, tempestade.” A proteção explicada em vídeo, com opção de assistir com som.</span></li>
+          <li><b>Todos os ramos</b><span>Residencial, vida, empresarial, planos de saúde, consórcios e outros seguros.</span></li>
+          <li><b>Cotação sem atrito</b><span>Botão “Cotar agora” sempre à mão e WhatsApp fixo na tela.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="hgal" id="telas" data-theme="night">
+    <div class="wrap hgal-head">
+      <h2 class="display" data-split>Mais telas</h2>
+      <p>Pitch decks, páginas internas e bastidores dos quatro projetos.</p>
+    </div>
+    <div class="hgal-scroller">
+      <div class="hgal-track" id="hgal-track">
+        <figure><img src="img/pitch-0.webp" alt="Capa do pitch deck do match.IA" loading="lazy"><figcaption><b>match.IA</b><span>Pitch deck · capa</span></figcaption></figure>
+        <figure><img src="img/pitch-2.webp" alt="Prancha do pitch: escolher um arquiteto ainda é um tiro no escuro" loading="lazy"><figcaption><b>match.IA</b><span>Pitch deck · o problema</span></figcaption></figure>
+        <figure><img src="img/match-planos.webp" alt="Página de planos do match.IA" loading="lazy"><figcaption><b>match.IA</b><span>Planos</span></figcaption></figure>
+        <figure><img src="img/cz-menu.webp" alt="Menu inicial do ChosenZen" loading="lazy"><figcaption><b>ChosenZen</b><span>Menu inicial · v0.4</span></figcaption></figure>
+        <figure><img src="img/cz-linha.webp" alt="Linha da vida do ChosenZen" loading="lazy"><figcaption><b>ChosenZen</b><span>Linha da vida</span></figcaption></figure>
+        <figure><img src="img/cz-57anos.webp" alt="A casa da Fase 1 décadas depois" loading="lazy"><figcaption><b>ChosenZen</b><span>A mesma casa, décadas depois</span></figcaption></figure>
+        <figure><img src="img/geo-hero.webp" alt="Página inicial do GeoMosaico com globo 3D" loading="lazy"><figcaption><b>GeoMosaico</b><span>Início</span></figcaption></figure>
+        <figure><img src="img/geo-personalizar.webp" alt="Formulário de roteiro personalizado" loading="lazy"><figcaption><b>GeoMosaico</b><span>Roteiro personalizado</span></figcaption></figure>
+        <figure><img src="img/geo-tours.webp" alt="Página de tours do GeoMosaico" loading="lazy"><figcaption><b>GeoMosaico</b><span>Destinos e tours</span></figcaption></figure>
+        <figure><img src="img/atl-tempestade.webp" alt="Cena de chuva no site da AtlanticoSeg: Lá fora, tempestade" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>O filme · tempestade</span></figcaption></figure>
+        <figure><img src="img/atl-guincho.webp" alt="Carro visto de cima no site da AtlanticoSeg" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>Carro reserva e guincho</span></figcaption></figure>
+        <figure><img src="img/atl-ramos.webp" alt="Ramos de seguro no site da AtlanticoSeg" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>Todos os ramos</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="lab" id="lab" data-theme="paper">
+    <div class="wrap">
+      <div class="sec-head"><span class="label" style="color:var(--ac)">Laboratório</span><h2 class="display" data-split>Onde eu aprendi fazendo</h2></div>
+      <div class="rows">
+        <a href="https://github.com/natanaelmgs04/Farmacia" target="_blank" rel="noopener"><span class="y">2025</span><span class="t">Sistema de farmácia</span><span class="d">Cadastro e consulta de produtos com banco de dados.</span><span class="s">MongoDB ↗</span></a>
+        <a href="https://github.com/natanaelmgs04/Sistema-de-LOGIN" target="_blank" rel="noopener"><span class="y">2025</span><span class="t">Sistema de login</span><span class="d">Autenticação com interface em Bootstrap.</span><span class="s">Node · MongoDB ↗</span></a>
+        <a href="https://github.com/natanaelmgs04/AC-WebDesign" target="_blank" rel="noopener"><span class="y">2025</span><span class="t">AC de Web Design</span><span class="d">Site da avaliação, feito em dupla com a Julya.</span><span class="s">HTML · CSS · JS ↗</span></a>
+        <a href="https://github.com/natanaelmgs04/analise-de-sistemas-python" target="_blank" rel="noopener"><span class="y">2025</span><span class="t">Análise de sistemas</span><span class="d">De laços de repetição a pequenos sistemas.</span><span class="s">Python ↗</span></a>
+        <a href="https://github.com/natanaelmgs04/GameJam_3MIB_Natanael-Cinthia-Julya" target="_blank" rel="noopener"><span class="y">2026</span><span class="t">Game Jam 3MIB</span><span class="d">Jogo feito em equipe com Cinthia e Julya, no tempo da jam.</span><span class="s">Godot ↗</span></a>
+        <a href="https://github.com/natanaelmgs04/integracao-firebase" target="_blank" rel="noopener"><span class="y">2026</span><span class="t">Apps em Ionic</span><span class="d">Firebase, armazenamento local, criptografia e abas.</span><span class="s">Angular · Ionic ↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESSO -->
+  <section class="process" id="processo" data-theme="night">
+    <div class="process-bg"><img id="process-img" src="img/sp-paulista.webp" alt="" loading="lazy"></div>
+    <div class="wrap">
+      <span class="label" style="color:#ffab3d">Como eu trabalho</span>
+      <blockquote>Eu gosto de levar um projeto até <em>o detalhe que ninguém pediu.</em></blockquote>
+      <div class="steps">
+        <article class="step" style="--i:0"><span class="k">01</span><h3>Ouvir</h3><p>Pesquisa de campo, entrevistas e mentorias antes da primeira tela. O match.IA nasceu de conversas com arquitetos.</p></article>
+        <article class="step" style="--i:1"><span class="k">02</span><h3>Desenhar</h3><p>Fluxos e telas no Figma, com cores, tipografia e componentes definidos cedo.</p></article>
+        <article class="step" style="--i:2"><span class="k">03</span><h3>Construir</h3><p>Front-end, back-end e IA andando juntos, sem complicar o que pode ser simples.</p></article>
+        <article class="step" style="--i:3"><span class="k">04</span><h3>Revisar</h3><p>Contraste, teclado, leitor de tela e celular, tela por tela. O foco certo, a transição que não atrasa.</p></article>
+        <article class="step" style="--i:4"><span class="k">05</span><h3>Apresentar</h3><p>Pitch, campanha e vídeo, para o projeto chegar até as pessoas.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="about" id="sobre" data-theme="paper">
+    <div class="wrap">
+      <div class="about-grid">
+        <figure class="about-photo"><span class="label">Jabaquara, SP</span><img src="img/natanael.webp" alt="Natanael sorrindo" width="640" height="640" loading="lazy"></figure>
+        <div class="about-text">
+          <span class="label" style="color:var(--ac)">Sobre mim</span>
+          <h2 class="display" data-split>Curioso, questionador e movido a propósito</h2>
+          <p class="big">Sou Natanael Martins Gomes Santos. Crio soluções, e alguns bugs, desde 2023. Termino o Técnico em Informática na FIAP School em 2026 e começo Engenharia de Software na FIAP em 2027.</p>
+          <p>Meu foco é inovação, automação e experiência do usuário, na web e no mobile. Gosto de entender o problema antes de abrir o editor, e de ver o projeto inteiro funcionando: a pesquisa, a interface, o servidor e a apresentação final.</p>
+          <ul class="chips" aria-label="Valores"><li>Empatia</li><li>Responsabilidade</li><li>Boa comunicação</li><li>Comprometimento</li><li>Honestidade</li><li>Raciocínio lógico</li><li>Humildade</li></ul>
+          <div class="btns"><a class="btn fill" href="cv-natanael-martins.pdf" target="_blank" rel="noopener">Ver meu currículo (PDF) ↗</a></div>
+        </div>
+      </div>
+      <div class="faith">
+        <div><span class="label" style="color:var(--ac)">Fora da tela</span><blockquote class="quote" style="margin-top:16px">“Nós amamos porque ele nos amou primeiro.”</blockquote><cite class="label" style="display:block;margin-top:16px;font-style:normal">1 João 4:19</cite></div>
+        <div>
+          <p>Minha fé é parte de quem eu sou. Fui criado num lar cristão, participo ativamente da igreja e dos grupos de adolescentes, e é lá que encontro força, amizades e sentido para o que faço.</p>
+          <p>Estudo teologia na Escola Teológica Sã Doutrina, na Igreja Presbiteriana de Pinheiros, com conclusão prevista para 2027. Acredito que conhecimento e valores andam juntos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAJETÓRIA -->
+  <section class="path" id="trajetoria" data-theme="paper">
+    <div class="wrap">
+      <div class="sec-head"><span class="label" style="color:var(--ac)">Trajetória</span><h2 class="display" data-split>De onde eu vim, para onde eu vou</h2></div>
+      <ol class="tl" id="tl">
+        <span class="tl-fill" id="tl-fill" aria-hidden="true"></span>
+        <li><time datetime="2019">2019</time><div><h3>Ensino Fundamental I</h3><p>Concluído no Colégio Presbiteriano Mackenzie.</p></div></li>
+        <li><time datetime="2023">2023</time><div><h3>Fundamental II e as primeiras linhas de código</h3><p>Concluído no Colégio Adventista de Diadema. No mesmo ano comecei a programar.</p></div></li>
+        <li><time datetime="2025">2025</time><div><h3>IA, Python e o primeiro cliente</h3><p>Imersão Dev. Agentes de IA (Alura e Google Gemini), Aprendendo com Python (ENAP), o GeoMosaico na Future Fest e o site da AtlanticoSeg.</p></div></li>
+        <li><time datetime="2026">2026</time><div><h3>match.IA, ChosenZen e a formatura</h3><p>O TCC vai para a banca, o ChosenZen chega às cinco fases da vida e eu concluo o Técnico em Informática na FIAP School.</p></div></li>
+        <li class="next"><time datetime="2027">2027</time><div><h3>Engenharia de Software na FIAP</h3><p>Começo a graduação e concluo a Escola Teológica Sã Doutrina.</p></div></li>
+        <li class="next"><time datetime="2030">2030</time><div><h3>Engenheiro de Software</h3><p>Conclusão prevista da graduação.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- HABILIDADES -->
+  <section class="skills" id="habilidades" data-theme="night">
+    <div class="marquee" aria-hidden="true"><span>JavaScript</span><span>Node.js</span><span>Figma</span><span>Gemini</span><span>Godot</span><span>MongoDB</span><span>JavaScript</span><span>Node.js</span><span>Figma</span><span>Gemini</span><span>Godot</span><span>MongoDB</span></div>
+    <div class="marquee rev" aria-hidden="true"><span>TypeScript</span><span>React</span><span>Ionic</span><span>Python</span><span>SQL</span><span>UI/UX</span><span>TypeScript</span><span>React</span><span>Ionic</span><span>Python</span><span>SQL</span><span>UI/UX</span></div>
+    <div class="wrap">
+      <div class="skill-grid">
+        <div><h3 class="label">Front-end &amp; mobile</h3><ul><li>HTML &amp; CSS <span>match.IA</span></li><li>JavaScript <span>match.IA</span></li><li>TypeScript <span>Apps</span></li><li>React <span>Front-end</span></li><li>Ionic Framework <span>Apps</span></li><li>Bootstrap <span>Login</span></li></ul></div>
+        <div><h3 class="label">Back-end &amp; dados</h3><ul><li>Node.js + Express <span>match.IA</span></li><li>MongoDB <span>GeoMosaico</span></li><li>Firebase <span>Apps</span></li><li>SQL <span>Curso</span></li><li>Python <span>ENAP</span></li><li>Power BI <span>Dados</span></li></ul></div>
+        <div><h3 class="label">Design &amp; produto</h3><ul><li>Figma <span>UI/UX</span></li><li>Design system <span>match.IA</span></li><li>Acessibilidade <span>WCAG</span></li><li>Análise de requisitos <span>TCC</span></li><li>Pitch &amp; campanha <span>match.IA</span></li></ul></div>
+        <div><h3 class="label">IA</h3><ul><li>Gemini API <span>match.IA</span></li><li>Agentes de IA e prompts <span>Alura</span></li><li>Claude, ChatGPT, Copilot <span>Dia a dia</span></li><li>DeepSeek <span>IA</span></li></ul></div>
+        <div><h3 class="label">Games &amp; motion</h3><ul><li>Godot 4 + GDScript <span>ChosenZen</span></li><li>Pixel art e cutscenes <span>ChosenZen</span></li><li>Remotion <span>Vídeo</span></li></ul></div>
+        <div><h3 class="label">Engenharia &amp; idiomas</h3><ul><li>Criptografia <span>Apps</span></li><li>Máquinas virtuais <span>Infra</span></li><li>Inglês <span>Intermediário</span></li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="contact" id="contato" data-theme="night">
+    <div class="contact-bg"><img id="contact-img" src="img/sp-skyline.webp" alt="" loading="lazy"></div>
+    <div class="wrap">
+      <span class="label" style="color:#ffab3d">Contato</span>
+      <h2 class="display" style="margin-top:20px" data-split>Bora criar <span class="serif">algo junto?</span></h2>
+      <div class="contact-grid">
+        <p>Estágio, freela, projeto de faculdade ou uma ideia que você quer tirar do papel.</p>
+        <ul class="channels">
+          <li><small>E-mail</small><strong>natanaelmgs04@gmail.com</strong><button class="go" type="button" data-copy="natanaelmgs04@gmail.com">Copiar</button></li>
+          <li><small>WhatsApp</small><strong>(11) 93090-7676</strong><button class="go" type="button" data-copy="(11) 93090-7676">Copiar</button></li>
+          <li><small>LinkedIn</small><strong>in/natanaelmgs04</strong><a class="go" href="https://www.linkedin.com/in/natanaelmgs04/" target="_blank" rel="noopener">Abrir ↗</a></li>
+          <li><small>GitHub</small><strong>@natanaelmgs04</strong><a class="go" href="https://github.com/natanaelmgs04" target="_blank" rel="noopener">Abrir ↗</a></li>
+          <li><small>Currículo</small><strong>CV em PDF</strong><a class="go" href="cv-natanael-martins.pdf" target="_blank" rel="noopener">Abrir ↗</a></li>
+          <li><small>Instagram</small><strong>@natanaelmgs04</strong><a class="go" href="https://www.instagram.com/natanaelmgs04/" target="_blank" rel="noopener">Abrir ↗</a></li>
+        </ul>
+      </div>
+      <footer class="foot">
+        <span>© 2026 Natanael Martins Gomes Santos</span>
+        <span>Fotos de São Paulo: Alex Estamato, Lucas Marcomini e Vinicius Amano (Unsplash)</span>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
