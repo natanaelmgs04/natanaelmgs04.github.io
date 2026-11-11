@@ -219,6 +219,29 @@ html.gl .slot img { visibility: hidden; }
   .hgal figure { scroll-snap-align: center; }
 }
 
+/* ---------- filmes ---------- */
+.films { padding-block: clamp(70px, 10vw, 150px); }
+.films-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(30px, 5vw, 64px); }
+.films-head h2 { font-size: var(--t-2xl); }
+.films-head p { color: var(--mut); max-width: 36ch; }
+.films-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr); gap: clamp(16px, 2.4vw, 34px); align-items: start; }
+.films-wide { display: grid; gap: clamp(16px, 2.4vw, 34px); }
+.film { display: grid; gap: 12px; min-width: 0; }
+.film-frame { position: relative; border-radius: 10px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
+.film.tall .film-frame { aspect-ratio: 9 / 16; }
+.film video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.film-play { position: absolute; inset: 0; display: grid; place-items: center; border: 0; padding: 0; cursor: pointer; background: linear-gradient(transparent 55%, rgba(0,0,0,.55)); color: #fff; font: inherit; }
+.film-play span { display: grid; place-items: center; width: clamp(64px, 8vw, 104px); aspect-ratio: 1; border-radius: 50%; background: var(--ac); color: #0a0d0e; transition: scale .35s var(--ease); }
+.film-play:hover span { scale: 1.1; }
+.film-play svg { width: 34%; margin-left: 6%; }
+.film-play em { position: absolute; left: 16px; bottom: 14px; font-style: normal; }
+.film.playing .film-play { display: none; }
+.film figcaption { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.film figcaption b { font-family: var(--f-display); font-variation-settings: "wdth" 80; font-weight: 800; text-transform: uppercase; font-size: var(--t-lg); line-height: 1; }
+.film figcaption span { color: var(--mut); font-size: var(--t-sm); }
+.film figcaption a { font-size: var(--t-sm); color: var(--ac); white-space: nowrap; }
+@media (max-width: 760px) { .films-grid { grid-template-columns: 1fr; } .film.tall { max-width: 300px; } }
+
 /* ---------- laboratório ---------- */
 .lab { padding-block: clamp(80px, 11vw, 160px); }
 .rows { margin-top: clamp(36px, 5vw, 70px); border-top: 1px solid var(--fg); }
@@ -331,6 +354,7 @@ html.gl .slot img { visibility: hidden; }
     <a class="brand" href="#topo" aria-label="Início">N.M</a>
     <nav class="nav label" aria-label="Seções">
       <a href="#projetos">Projetos</a>
+      <a href="#filmes">Filmes</a>
       <a href="#processo">Processo</a>
       <a href="#sobre">Sobre</a>
       <a href="#trajetoria">Trajetória</a>
@@ -551,6 +575,41 @@ html.gl .slot img { visibility: hidden; }
         <figure><img src="img/atl-tempestade.webp" alt="Cena de chuva no site da AtlanticoSeg: Lá fora, tempestade" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>O filme · tempestade</span></figcaption></figure>
         <figure><img src="img/atl-guincho.webp" alt="Carro visto de cima no site da AtlanticoSeg" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>Carro reserva e guincho</span></figcaption></figure>
         <figure><img src="img/atl-ramos.webp" alt="Ramos de seguro no site da AtlanticoSeg" loading="lazy"><figcaption><b>AtlanticoSeg</b><span>Todos os ramos</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILMES -->
+  <section class="films" id="filmes" data-theme="night">
+    <div class="wrap">
+      <div class="films-head">
+        <div class="sec-head"><span class="label" style="color:var(--ac)">Em movimento</span><h2 class="display" data-split>Os filmes</h2></div>
+        <p>Um vídeo para cada marca: o reel de lançamento, o filme do site e o trailer do jogo.</p>
+      </div>
+      <div class="films-grid">
+        <figure class="film tall">
+            <div class="film-frame">
+              <video preload="none" playsinline poster="img/poster-match.webp" src="video/match-ia-reel.mp4"></video>
+              <button class="film-play" type="button" aria-label="Assistir match.IA"><span><svg viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg></span><em class="label">0:30 · vertical</em></button>
+            </div>
+            <figcaption><b>match.IA</b><span>Reel de lançamento para o Instagram</span><a href="https://natanaelmgs04.github.io/video/match-ia-reel.mp4" target="_blank" rel="noopener">Abrir em tela cheia ↗</a></figcaption>
+          </figure>
+        <div class="films-wide">
+          <figure class="film">
+            <div class="film-frame">
+              <video preload="none" playsinline poster="img/poster-atl.webp" src="video/atlanticoseg-filme.mp4"></video>
+              <button class="film-play" type="button" aria-label="Assistir AtlanticoSeg"><span><svg viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg></span><em class="label">1:23</em></button>
+            </div>
+            <figcaption><b>AtlanticoSeg</b><span>“Lá fora, tempestade.” O filme do site</span><a href="https://natanaelmgs04.github.io/video/atlanticoseg-filme.mp4" target="_blank" rel="noopener">Abrir em tela cheia ↗</a></figcaption>
+          </figure>
+          <figure class="film">
+            <div class="film-frame">
+              <video preload="none" playsinline poster="img/poster-cz.webp" src="video/chosenzen-trailer.mp4"></video>
+              <button class="film-play" type="button" aria-label="Assistir ChosenZen"><span><svg viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg></span><em class="label">0:45</em></button>
+            </div>
+            <figcaption><b>ChosenZen</b><span>Trailer: cinco fases, uma vida inteira</span><a href="https://natanaelmgs04.github.io/video/chosenzen-trailer.mp4" target="_blank" rel="noopener">Abrir em tela cheia ↗</a></figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>

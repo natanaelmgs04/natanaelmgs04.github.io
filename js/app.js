@@ -26,6 +26,19 @@
     });
   });
 
+  /* ---------- filmes: tocar ao clicar, um de cada vez ---------- */
+  var films = $$('.film');
+  films.forEach(function (f) {
+    var v = $('video', f), btn = $('.film-play', f);
+    btn.addEventListener('click', function () {
+      films.forEach(function (o) { if (o !== f) $('video', o).pause(); });
+      f.classList.add('playing'); v.controls = true;
+      var p = v.play(); if (p && p.catch) p.catch(function () { f.classList.remove('playing'); });
+    });
+    v.addEventListener('error', function () { f.classList.remove('playing'); });
+    v.addEventListener('play', function () { f.classList.add('playing'); films.forEach(function (o) { if (o !== f) $('video', o).pause(); }); });
+  });
+
   /* ---------- temas por seção ---------- */
   var themed = $$('[data-theme]');
   function pickTheme() {
@@ -257,7 +270,7 @@
   $$('.tl li').forEach(function (li) {
     gsap.from(li.children, { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1, scrollTrigger: { trigger: li, start: 'top 88%', once: true } });
   });
-  $$('.about-text > *, .faith > *, .skill-grid > *, .contact-grid > *, .process blockquote, .facts li').forEach(function (el) {
+  $$('.film, .about-text > *, .faith > *, .skill-grid > *, .contact-grid > *, .process blockquote, .facts li').forEach(function (el) {
     gsap.from(el, { y: 36, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
   });
   gsap.fromTo('.about-photo img', { yPercent: 8, scale: 1.04 }, { yPercent: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: '.about-photo', start: 'top bottom', end: 'bottom top', scrub: true } });
